@@ -35,7 +35,7 @@ public class SFTPUploadTask extends Thread {
 
                     try {
                         JSch jSch = new JSch();
-                        session = jSch.getSession("sftp", SFTPUploadTask.this.host, 22);
+                        session = jSch.getSession(SFTPUploadTask.this.connection_information.getUsername(), SFTPUploadTask.this.host, 22);
                         session.setUserInfo(SFTPUploadTask.this.connection_information);
                         session.setConfig("compression.s2c", "zlib@openssh.com,zlib,none");
                         session.setConfig("compression.c2s", "zlib@openssh.com,zlib,none");

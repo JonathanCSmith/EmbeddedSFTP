@@ -109,7 +109,7 @@ public class EmbeddedSFTP extends JApplet implements SftpProgressMonitor {
     }
 
     private void buildUserInformation(String username, char[] password) {
-        this.connectionInformation = new ConnectionInformation(username, password);
+        this.connectionInformation = new ConnectionInformation("biocompute-DM_user_" + username, password);
     }
 
     private void switchViewportContents() {

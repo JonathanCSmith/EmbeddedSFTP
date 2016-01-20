@@ -15,6 +15,9 @@ public class ConnectionInformation implements UserInfo {
         this.password = new String(password);
     }
 
+    public String getUsername() {
+        return this.username;
+    }
 
     public String getPassphrase() {
         return null;
