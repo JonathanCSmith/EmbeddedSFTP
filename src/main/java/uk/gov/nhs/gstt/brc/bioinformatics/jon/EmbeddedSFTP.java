@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import com.jcraft.jsch.SftpProgressMonitor;
 
@@ -21,6 +23,7 @@ public class EmbeddedSFTP extends JApplet implements SftpProgressMonitor {
     private File                  selected_file         = null;
     private long                  count                 = 0;
     private long                  max                   = 0;
+    private int                   lastDisplay           = -1;
 
     private Container      content;
     private JPanel         panel;
@@ -147,13 +150,15 @@ public class EmbeddedSFTP extends JApplet implements SftpProgressMonitor {
     public void init(int op, String src, String dest, long max) {
         this.max = max;
         this.count = 0;
+        this.lastDisplay = 0;
         this.append("Upload Progress: 0%");
     }
 
     public boolean count(long count) {
         this.count += count;
         int amount = ((int) Math.floor((this.count * 100.0f) / (float) this.max));
-        if (amount % 5 == 0) {
+        if (amount % 5 == 0 && amount != this.lastDisplay) {
+            this.lastDisplay = amount;
             this.append("Upload Progress: " + amount + "%");
         }
 
@@ -167,10 +172,14 @@ public class EmbeddedSFTP extends JApplet implements SftpProgressMonitor {
     // Function to restore original based on an upload complete notification
     public void reset() {
         this.append("Upload complete.");
-        this.selectedFilesTextField.setText("");
-        this.fileSelectionTask = null;
-        this.sftpUploadTask = null;
-        this.connectionInformation = null;
-        this.selected_file = null;
+
+        String url = this.getDocumentBase().toString();
+        try {
+            this.getAppletContext().showDocument(new URL(url + "/f:" + this.selected_file.getName()));
+        }
+
+        catch (MalformedURLException ex) {
+            this.append(ex.getLocalizedMessage());
+        }
     }
 }
