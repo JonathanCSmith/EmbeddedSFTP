@@ -4,6 +4,8 @@ import com.jcraft.jsch.UserInfo;
 
 /**
  * Created by Jonathan Charles Smith on 06/01/16.
+ *
+ * Generic connection information (minimal viable based on {@link UserInfo}
  */
 public class ConnectionInformation implements UserInfo {
 
